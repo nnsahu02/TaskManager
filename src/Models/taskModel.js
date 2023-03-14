@@ -10,26 +10,25 @@ const TaskSchema = new mongoose.Schema({
         required: true
     },
     dueDate: {
-        type: Date,
+        type: String,
         required: true
     },
     period: {
         type: String,
         required: true,
-        enum: ['monthly', 'quarterly', 'yearly']
+        //match: /^([A-Z][a-z]{2}\s\d{4})$/
     },
     periodType: {
         type: String,
         required: true,
-        match: /^([A-Z][a-z]{2}\s\d{4})$/
+        enum: ['monthly', 'quarterly', 'yearly']
     },
-    taskList: {
+    taskListId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'TaskList',
         required: true
     }
 }, { timestamps: true });
 
-const Task = mongoose.model('Task', TaskSchema);
+module.exports = mongoose.model('Task', TaskSchema);
 
-module.exports = { Task };

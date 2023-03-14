@@ -15,7 +15,6 @@ const TaskListSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const TaskList = mongoose.model('TaskList', TaskListSchema);
+module.exports = mongoose.model('TaskList', TaskListSchema);
 
 
-module.exports = { TaskList };

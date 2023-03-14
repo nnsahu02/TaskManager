@@ -1,18 +1,34 @@
 const listModel = require('../Models/listModel')
 const taskModel = require('../Models/taskModel')
 
-const createTaskList = (req, res) => {
+const createTaskList = async (req, res) => {
     try {
-        console.log("Nije kr")
+        const { name, description, active } = req.body
+
+        const createTaskList = await listModel.create(req.body)
+
+        return res.status(201).send({ status: true, data: createTaskList })
 
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
     }
 }
 
-const createTask = (req, res) => {
+const createTask = async (req, res) => {
     try {
-        console.log("Nije kr")
+        const { taskName, description, dueDate, period, periodType, taskListId } = req.body
+
+        const isDueDate = new Date(dueDate.split('-').reverse().join('-'));
+
+        const endOfPeriod = new Date(`${period} 23:59:59`);
+        if (isDueDate <= endOfPeriod) {
+            throw new Error(`Due date must be after end of period for ${periodType}`);
+        }
+
+        const createTask = await taskModel.create(req.body)
+
+        return res.status(201).send({ status: true, data: createTask })
+
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
     }
