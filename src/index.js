@@ -18,8 +18,8 @@ mongoose.connect(process.env.DB,
 
 app.use("/", route)
 
-app.listen(process.env.PORT , function () {
-    console.log("Express is running on port " + (process.env.PORT ))
+app.listen(process.env.PORT, function () {
+    console.log("Express is running on port " + (process.env.PORT))
 })
 
 console.log("Let's set some task🥰🥰🥰")
