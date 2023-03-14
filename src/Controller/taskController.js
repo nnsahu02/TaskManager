@@ -34,9 +34,32 @@ const createTask = async (req, res) => {
     }
 }
 
-const taskList = (req, res) => {
+const taskList = async (req, res) => {
     try {
-        console.log("Nije kr")
+        let { page, limit, searchText } = req.query
+
+        page = page || 1
+        limit = limit || 10
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        let filter = {}
+
+        filter.taskName = { $regex: searchText, $options: "i" }
+        filter.description = { $regex: searchText, $options: "i" }
+
+        if (searchText) {
+
+            const data = await taskModel.find(filter).skip(startIndex).limit(endIndex)
+
+            return res.status(200).send({ status: true, data: data })
+        } else {
+            const data = await taskModel.find()
+
+            return res.status(200).send({ status: true, data: data })
+        }
+
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
     }
